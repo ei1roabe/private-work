@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  # データベース
+  postgres:
+    image: postgres:15-alpine
+    container_name: bff-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: my_knowledge_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # データベースの中身をブラウザで見れるツール（http://localhost:8080）
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: bff-pgadmin
+    ports:
+      - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
